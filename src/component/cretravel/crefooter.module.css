@@ -1,3 +1,7 @@
+body {
+    font-weight: 300 !important;
+}
+
 .creleftbutton {
     display: flex;
     justify-content: center;

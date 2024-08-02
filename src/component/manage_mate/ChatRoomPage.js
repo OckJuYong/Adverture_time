@@ -3,22 +3,22 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import ChatSty from './ChatRoomPage.module.css';
 
-import ENFJ from '../img2/ENFJ 시드니.png';
-import ENFP from '../img2/ENFP 바르셀로나.png';
-import ENTJ from '../img2/ENTJ 뉴욕.png';
-import ENTP from '../img2/ENTP 런던.png';
-import ESFJ from '../img2/ESFJ 라스베이거스.png';
-import ESFP from '../img2/ESFP 암스테르담.png';
-import ESTJ from '../img2/ESTJ 서울.png';
-import ESTP from '../img2/ESTP 홍콩.png';
-import INFJ from '../img2/INFJ 센프란시스코.png';
-import INFP from '../img2/INFP 파리.png';
-import INTJ from '../img2/INTJ 싱가포르.png';
-import INTP from '../img2/INTP 베를린.png';
-import ISFJ from '../img2/ISFJ 교토.png';
-import ISFP from '../img2/ISFP 리우데자네이루.png';
-import ISTJ from '../img2/ISTJ 도쿄.png';
-import ISTP from '../img2/ISTP 부다페스트.png';
+import ENFJ from"../img2/ENFJ 시드니 (1).png"
+import ENFP from '../img2/ENFP 바르셀로나 (1).png';
+import ENTJ from '../img2/ENTJ 뉴욕 (1).png';
+import ENTP from '../img2/ENTP 런던 (1).png';
+import ESFJ from '../img2/ESFJ 라스베이거스 (1).png';
+import ESFP from '../img2/ESFP 암스테르담 (1).png';
+import ESTJ from '../img2/ESTJ 서울 (1).png';
+import ESTP from '../img2/ESFP 암스테르담 (1).png';
+import INFJ from '../img2/INFJ 센프란시스코 (1).png'
+import INFP from '../img2/INFP 파리 (1).png';
+import INTJ from '../img2/INTJ 싱가포르 (1).png';
+import INTP from '../img2/INTP 베를린 (1).png';
+import ISFJ from '../img2/ISFJ 교토 (1).png';
+import ISFP from '../img2/ISFP 리우데자네이루 (1).png';
+import ISTJ from '../img2/ISTJ 도쿄 (1).png';
+import ISTP from '../img2/ISTP 부다페스트 (1).png';
 
 const ChatRoomPage = () => {
     const { roomId } = useParams();

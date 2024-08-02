@@ -1,3 +1,7 @@
+body {
+    font-weight: 300 !important;
+}
+
 .choicebox {
     position: absolute;
     top: 50%;
@@ -80,4 +84,9 @@
         height: 10vh;
         font-size: 1.5vw;
     }
+}
+
+.placeName {
+    width: 10vw !important;
+
 }

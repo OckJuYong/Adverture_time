@@ -1,3 +1,7 @@
+body {
+    font-weight: 300 !important;
+}
+
 .Creheadercontainer {
     display: flex;
     flex-direction: column;
