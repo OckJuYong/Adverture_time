@@ -70,6 +70,7 @@ function Firstmatepage() {
                 const jwtRefreshToken = localStorage.getItem('jwtRefreshToken');
 
                 const config = {
+                    withCredentials: true,
                     headers: {
                         'Cookie': `jwtToken=${jwtToken}; jwtRefreshToken=${jwtRefreshToken}`
                     }
@@ -101,7 +102,7 @@ function Firstmatepage() {
                     console.error('memberId not found in localStorage');
                     return;
                 }
-
+    
                 const response = await axios.post(`http://43.202.121.14:8000/getlist/friends/${memberId}/`, list, {
                     withCredentials: false,
                     headers: {
@@ -109,6 +110,14 @@ function Firstmatepage() {
                     }
                 });
                 console.log('Persona data:', response.data);
+                
+                // response.data.list에서 travel_user_id를 키로, tendency를 값으로 로컬 스토리지에 저장
+                if (response.data.list && response.data.list.length > 0) {
+                    response.data.list.forEach(item => {
+                        localStorage.setItem(item.travel_user_id, item.tendency);
+                    });
+                }
+                
                 setPersonaData(response.data);
                 setSelfData(response.data.self);
             } catch (error) {
@@ -116,7 +125,7 @@ function Firstmatepage() {
                 console.log(list);
             }
         };
-
+    
         if (list.list && list.list.length > 0) {
             fetchPersonaData();
         }
@@ -149,12 +158,20 @@ function Firstmatepage() {
     };
 
     const renderMBTIImage = (mbti) => {
+        const { background } = mbtiColors[mbti] || { background: '#fff' };
+    
         return (
-            <img 
-                src={mbtiImages[mbti]} 
-                alt={`${mbti} image`} 
-                className={permainstyle.perimg1}
-            />
+            <div 
+                style={{ backgroundColor: background, padding: '10px', borderRadius: '8px', display: 'inline-block' }} // 배경색 및 스타일 적용
+            >
+                <img 
+                    src={mbtiImages[mbti]} 
+                    alt={`${mbti} image`} 
+                    className={permainstyle.perimg1}
+                    style={{ display: 'block', width: '100%', borderRadius: '800px' }} // 이미지 스타일
+                />
+                
+            </div>
         );
     };
 
@@ -163,6 +180,7 @@ function Firstmatepage() {
             <div className={permainstyle.userstatedistrict}>
                 <p className={permainstyle.compat}>궁합</p>
                 <p className={permainstyle.percent}>{compatibility}%</p>
+                <div className={permainstyle.imgtext}></div>
             </div>
         );
     };

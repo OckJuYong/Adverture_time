@@ -156,3 +156,28 @@
   padding: 10px;
 }
 
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalContent h2 {
+  font-size: 7vw;
+  font-weight: 300;
+  margin-top: 30vh;
+}
+
+.modalContent input {
+  font-size: 5vw;
+  margin-left: 7vw;
+  margin-top: 20vh;
+  background-color: none;
+  border: none;
+}
+
+.modalContent button {
+  font-size: 4vw;
+  background-color: none;
+  border: none;
+}

@@ -44,6 +44,10 @@ import Mateprop1 from './component/mate_prop1/mateprop1';
 import CreateChatRoom from './component/test/chatamke';
 import FriendManagement from './component/test/friendtest';
 import ChatRoomTest from './component/test/checklist';
+
+import ChatRoomPage  from './component/manage_mate/ChatRoomPage';
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -90,6 +94,7 @@ function App() {
         <Route path="/friendtestpage" element={ <FriendManagement/>} />
         <Route path="/cheklist" element={<ChatRoomTest/>} />
 
+        <Route path="/chat-room/:roomId" element={<ChatRoomPage />} />
 
           </Routes>
         </div>

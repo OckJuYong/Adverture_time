@@ -93,6 +93,7 @@ function Mateprop1() {
                 const jwtRefreshToken = localStorage.getItem('jwtRefreshToken');
 
                 const config = {
+                    withCredentials: true,
                     headers: {
                         'Cookie': `jwtToken=${jwtToken}; jwtRefreshToken=${jwtRefreshToken}`
                     }
@@ -182,6 +183,7 @@ function Mateprop1() {
         const jwtRefreshToken = localStorage.getItem('jwtRefreshToken');
     
         const config = {
+            withCredentials: true,
             headers: {
                 'jwtToken': jwtToken,
                 'jwtRefreshToken': jwtRefreshToken
