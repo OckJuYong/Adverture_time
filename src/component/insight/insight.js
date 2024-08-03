@@ -103,7 +103,7 @@ function Modal({ diary, closeModal }) {
     <div className={Sty.modalOverlay}>
       <div className={Sty.modal}>
         <button className={Sty.closeButton} onClick={closeModal}>X</button>
-        <img url={diary.pictureUrl} alt="Diary" className={Sty.modalImage} />
+        <img url={diary.picture} alt="Diary" className={Sty.modalImage} />
         <div className={Sty.modalContent}>
           <div className={Sty.modalHeader}>
             <h2>{diary.title}</h2>
