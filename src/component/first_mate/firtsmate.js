@@ -125,7 +125,7 @@ function Firstmatepage() {
                     return;
                 }
 
-                const response = await axios.post(`http://43.202.121.14:8000/getlist/friends/${memberId}/`, list, {
+                const response = await axios.post(`https://seominjae.duckdns.org/getlist/friends/${memberId}/`, list, {
                     withCredentials: false,
                     headers: {
                         'Content-Type': 'application/json',

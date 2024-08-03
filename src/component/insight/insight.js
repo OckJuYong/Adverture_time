@@ -28,7 +28,7 @@ function Home() {
     }
 
     try {
-      const response = await axios.get(`http://43.202.121.14:8000/diary/8/`, {
+      const response = await axios.get(`https://seominjae.duckdns.org/diary/8/`, {
         withCredentials: false,
         headers: {
           'Content-Type': 'application/json',
