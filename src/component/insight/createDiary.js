@@ -60,7 +60,7 @@ function CreateDiary() {
     }
 
     try {
-      const response = await axios.post(`http://43.202.121.14:8000/diary/${memberId}/`, data, {
+      const response = await axios.post(`https://seominjae.duckdns.org/diary/${memberId}/`, data, {
         withCredentials: false,
         headers: {
           'Content-Type': 'application/json',

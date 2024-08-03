@@ -12,7 +12,7 @@ function Crechoice() {
         try {
             const travelUserId = localStorage.getItem('memberId');
             const response = await axios.post(
-                'http://43.202.121.14:8000/recommend/places/',
+                'https://seominjae.duckdns.org/recommend/places/',
                 { travel_user_id: travelUserId },
                 {
                     withCredentials: false,

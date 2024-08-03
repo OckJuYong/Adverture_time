@@ -126,7 +126,7 @@ function Mateprop1() {
                     return;
                 }
 
-                const response = await axios.post(`http://43.202.121.14:8000/getlist/no-friends/${memberId}/`, list, {
+                const response = await axios.post(`https://seominjae.duckdns.org/getlist/no-friends/${memberId}/`, list, {
                     withCredentials: false,
                     headers: {
                         'Content-Type': 'application/json',
