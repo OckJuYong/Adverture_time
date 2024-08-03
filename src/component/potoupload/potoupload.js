@@ -64,7 +64,7 @@ function Potouploadpage() {
       }
 
       try {
-        const response = await axios.post('https://43.202.121.14/persona/create_user_info/', formData, {
+        const response = await axios.post('http://43.202.121.14:8000/persona/create_user_info/', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

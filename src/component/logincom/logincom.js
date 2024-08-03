@@ -35,7 +35,7 @@ function Logincom() {
           const user = response.data.travelUserId;
           
           // 정보를 성공적으로 가져왔을 때
-          const response1 = await axios.post(`https://43.202.121.14/getlist/friends/${user}/`);
+          const response1 = await axios.post(`http://43.202.121.14:8000/getlist/friends/${user}/`);
           console.log(response1.data.self.tendency);
 
           localStorage.setItem('taste_travel', response1.data.self.tendency);
