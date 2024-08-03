@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Logincomstyle from "./logincom.module.css";
 import axios from "axios";
-
 import Cookies from 'js-cookie';
-
 
 function Logincom() {
     const [userInfo, setUserInfo] = useState(null);
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [isUserInfoFetched, setIsUserInfoFetched] = useState(false); // 정보 가져오기 성공 여부 상태 추가
     const navigate = useNavigate();
 
     const create_persona = () => {
@@ -18,9 +17,8 @@ function Logincom() {
           replace: true });
     }
 
-
-    const goToTestPage = () => {
-        navigate("/test");
+    const Home_button = () => {
+      navigate("/home");
     }
   
     useEffect(() => {
@@ -33,16 +31,24 @@ function Logincom() {
             }
           });
           setUserInfo(response.data);
-          console.log(response);
-    
-          // 쿠키 정보 출력
+          console.log(response.data.travelUserId);
+          const user = response.data.travelUserId;
+          
+          // 정보를 성공적으로 가져왔을 때
+          const response1 = await axios.post(`https://43.202.121.14/getlist/friends/${user}/`);
+          console.log(response1.data.self.tendency);
+
+          localStorage.setItem('taste_travel', response1.data.self.tendency);
+
+          // 정보 가져오기 성공 여부 상태 업데이트
+          setIsUserInfoFetched(true);
+
+          // 쿠키 정보 출력 및 저장
           console.log('jwtToken:', Cookies.get('jwtToken'));
           console.log('jwtRefreshToken:', Cookies.get('jwtRefreshToken'));
     
-          // 모든 쿠키 출력
           console.log('All cookies:', Cookies.get());
     
-          // 쿠키 정보 로컬 스토리지에 저장
           const jwtToken = Cookies.get('jwtToken');
           const jwtRefreshToken = Cookies.get('jwtRefreshToken');
     
@@ -50,7 +56,7 @@ function Logincom() {
           if (jwtRefreshToken) localStorage.setItem('jwtRefreshToken', jwtRefreshToken);
         } catch (error) {
           console.error("사용자 정보 가져오기 실패:", error);
-          setError("사용자 정보를 가져오는데 실패했습니다.");
+          setIsUserInfoFetched(false); // 실패 시 정보 가져오기 상태를 false로 설정
         } finally {
           setIsLoading(false);
         }
@@ -70,7 +76,6 @@ function Logincom() {
     const userName = userInfo && userInfo.name ? userInfo.name : 'OOO';
     localStorage.setItem('memberId', userInfo.member.memberId);
 
-
     return(
         <div className={Logincomstyle.logincombox}>
             <h1 className={Logincomstyle.title}>반가워요! {userName}님</h1>
@@ -79,7 +84,12 @@ function Logincom() {
                 {userName}님의 여행 페르소나를 생성할게요!
             </p>
 
-            <button className={Logincomstyle.button} onClick={create_persona}>페르소나 생성하기</button>
+            {isUserInfoFetched ? (
+                <button className={Logincomstyle.button1} onClick={Home_button}>Home으로 가기</button>
+            ) : (
+                <button className={Logincomstyle.button} onClick={create_persona}>페르소나 생성하기</button>
+            )}
+
             <div className={Logincomstyle.circleContainer}>
                 <div className={Logincomstyle.circle}></div>
                 <div className={Logincomstyle.circle2}></div>

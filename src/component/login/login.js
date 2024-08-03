@@ -55,7 +55,9 @@ function Login() {
         jwtToken: loginResponse.data.jwtToken,
         jwtRefreshToken: loginResponse.data.jwtRefreshToken
       })
-      console.log("로그인 성공",response.data)
+      console.log("로그인 성공",response.data.travel_user_id)
+
+      // const response1 = await axios.post('http://43.202.121.14:8000/getlist/friends/7/')
       alert("로그인 성공!");
 
       // 로그인 성공 후 이동할 페이지로 네비게이트

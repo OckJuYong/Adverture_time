@@ -107,3 +107,20 @@
         bottom: 25vh; /* 큰 화면에서 버튼의 위치 조정 */
     }
 }
+
+.button1 {
+    position: absolute;
+    top: 70vh;
+    left: 46%;
+    height: 8%;
+    transform: translateX(-50%);
+    width: 70%;
+    padding: 3vw 0;
+    background-color: #6285E1;
+    color: white;
+    border: none;
+    border-radius: 6vw;
+    font-size: 4vw;
+    font-weight: 600;
+    cursor: pointer;
+}

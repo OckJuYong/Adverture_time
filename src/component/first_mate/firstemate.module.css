@@ -50,6 +50,10 @@
     padding: 0 2px;
     position: relative;
 }
+.mateImage{
+    width: 10.2vw !important;
+    margin-top: 1px;
+}
 
 .toggleoption {
     flex: 1;
@@ -145,10 +149,11 @@
     color: white;
     border: none;
     border-radius: 43.2px;
-    font-size: 4vw;
+    font-size: 5vw;
     cursor: pointer;
     bottom: 10vh;
     right: 27vw;
+    font-weight: bold !important;
 }
 
 .mateInfo {
@@ -225,4 +230,3 @@
     width: 10vw;
     height: 7vh;
 }
-

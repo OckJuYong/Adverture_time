@@ -83,7 +83,7 @@ function Firstmatepage() {
     const [list, setList] = useState([]);
     const [selectedMate, setSelectedMate] = useState(null);
     const [selfData, setSelfData] = useState(null);
-    const [selectedMateMBTI, setSelectedMateMBTI] = useState(null); // 메이트의 MBTI를 상태로 추가
+    const [selectedMateMBTI, setSelectedMateMBTI] = useState(null);
 
     useEffect(() => {
         const fetchMyMates = async () => {
@@ -162,7 +162,7 @@ function Firstmatepage() {
             const selected = personaData.list.find(mate => mate.travel_user_id === friendTravelUserId);
             if (selected) {
                 setSelectedMate(selected);
-                setSelectedMateMBTI(selected.tendency); // 메이트의 MBTI를 상태로 저장
+                setSelectedMateMBTI(selected.tendency);
                 console.log(`Clicked mate's MBTI: ${selected.tendency}`);
             } else {
                 console.log('MBTI information not found for this mate.');
@@ -177,13 +177,13 @@ function Firstmatepage() {
     
         return (
             <div 
-                style={{ backgroundColor: background, padding: '10px', borderRadius: '8px', display: 'inline-block' }} // 배경색 및 스타일 적용
+                style={{ backgroundColor: background, padding: '10px', borderRadius: '8px', display: 'inline-block' }}
             >
                 <img 
                     src={mbtiImages[mbti]} 
                     alt={`${mbti} image`} 
                     className={permainstyle.perimg1}
-                    style={{ display: 'block', width: '100%', borderRadius: '8px' }} // 이미지 스타일
+                    style={{ display: 'block', width: '100%', borderRadius: '8px' }}
                 />
             </div>
         );
@@ -202,7 +202,6 @@ function Firstmatepage() {
                 <p className={permainstyle.compat}>궁합</p>
                 <p className={permainstyle.percent}>{compatibility}%</p>
                 
-                {/* Self User MBTI Section */}
                 <div 
                     className={permainstyle.imgtext} 
                     style={{ backgroundColor: selfMbtiColors.textBackground }}
@@ -211,7 +210,6 @@ function Firstmatepage() {
                     <p className={permainstyle.boxtext} style={{ color: '#fff', margin: '0' }}>{mbtiToCityMap[selfData.tendency]}</p>
                 </div>
 
-                {/* Selected Mate MBTI Section */}
                 <div 
                     className={permainstyle.imgtext2} 
                     style={{ backgroundColor: mateMbtiColors.textBackground }}
@@ -282,7 +280,14 @@ function Firstmatepage() {
                                             className={styles.header_container}
                                             onClick={() => handleMateClick(mate.friendTravelUserId)}
                                         >
-                                            <img />
+                                            {personaData && personaData.list && (
+                                                <img 
+                                                    src={mbtiImages1[personaData.list.find(p => p.travel_user_id === mate.friendTravelUserId)?.tendency
+                                                        + '1']}
+                                                    alt="Mate MBTI"
+                                                    className={styles.mateImage}
+                                                />
+                                            )}
                                             <p>{mate.friendTravelUserDto.name}</p>
                                         </div>
                                     </div>
@@ -292,13 +297,7 @@ function Firstmatepage() {
                         
                         <div className={styles.mateManageIconContainer} onClick={manageMate}>
                             <div className={styles.mateManageCircle}>
-                                {selectedMateMBTI && (
-                                    <img 
-                                        className={styles.img} 
-                                        src={mbtiImages1[selectedMateMBTI + '1']} 
-                                        alt="Mate icon" 
-                                    />
-                                )}
+                                <img src={mate} alt="Mate management icon" className={styles.img} />
                             </div>
                             <div className={styles.mateManageIcon}>
                                 메이트 관리
