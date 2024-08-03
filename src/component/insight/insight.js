@@ -70,7 +70,7 @@ function Home() {
           <div className={Sty.diaries_grid}>
             {diaries.map((diary, index) => (
               <div key={index} className={Sty.diary_item} onClick={() => openModal(diary)}>
-                <img src={diary.picture} alt={`Diary ${index + 1}`} className={Sty.diary_image}/>
+                <img src={diary.pictureUrl} alt={`Diary ${index + 1}`} className={Sty.diary_image}/>
               </div>
             ))}
           </div>
@@ -103,7 +103,7 @@ function Modal({ diary, closeModal }) {
     <div className={Sty.modalOverlay}>
       <div className={Sty.modal}>
         <button className={Sty.closeButton} onClick={closeModal}>X</button>
-        <img src={diary.picture} alt="Diary" className={Sty.modalImage} />
+        <img src={diary.pictureUrl} alt="Diary" className={Sty.modalImage} />
         <div className={Sty.modalContent}>
           <div className={Sty.modalHeader}>
             <h2>{diary.title}</h2>
