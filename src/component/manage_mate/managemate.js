@@ -30,6 +30,24 @@ const mbtiImages = {
     INFJ, INFP, INTJ, INTP, ISFJ, ISFP, ISTJ, ISTP
 };
 
+function Modal({ isOpen, onClose, travelUserId }) {
+    if (!isOpen) return null;
+  
+    return (
+      <div className={styles.modalOverlay}>
+        <div className={styles.modal}>
+          <button className={styles.closeButton} onClick={onClose}>X</button>
+          <div className={styles.modalContent}>
+            <div className={styles.modalHeader}>
+              <h2>User Info</h2>
+            </div>
+            <p>Travel User ID: {travelUserId}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
 function MyMates() {
     const [myMates, setMyMates] = useState([]);
     const [roomId, setRoomId] = useState(null);
@@ -136,6 +154,8 @@ function MyMates() {
 
 function ReceivedRequests() {
     const [receivedRequests, setReceivedRequests] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState(null);
 
     useEffect(() => {
         const fetchReceivedRequests = async () => {
@@ -207,6 +227,16 @@ function ReceivedRequests() {
         }
     };
 
+    const openModal = (userId) => {
+        setSelectedUserId(userId);
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setSelectedUserId(null);
+    };
+
     return (
         <div className={styles.content}>
             <div className={styles.header_container}>
@@ -217,7 +247,7 @@ function ReceivedRequests() {
                 receivedRequests.map((request) => (
                     <div key={request.id} className={styles.selectedMateInfo}>
                         <div className={styles.img}></div>
-                        <div className={styles.chat_container}>
+                        <div className={styles.chat_container} onClick={() => openModal(request.friendTravelUserId)}>
                             <p className={styles.userName}>{request.name}</p>
                             <p>{request.location} • 궁합 {request.percentage}%</p>
                         </div>
@@ -230,12 +260,15 @@ function ReceivedRequests() {
             ) : (
                 <p className={styles.noMateMessage}>받은 요청이 없습니다.</p>
             )}
+            <Modal isOpen={modalOpen} onClose={closeModal} travelUserId={selectedUserId} />
         </div>
     );
 }
 
 function SentRequests() {
     const [sentRequests, setSentRequests] = useState([]);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [selectedUserId, setSelectedUserId] = useState(null);
 
     useEffect(() => {
         const fetchSentRequests = async () => {
@@ -261,6 +294,16 @@ function SentRequests() {
         fetchSentRequests();
     }, []);
 
+    const openModal = (userId) => {
+        setSelectedUserId(userId);
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+        setSelectedUserId(null);
+    };
+
     return (
         <div className={styles.content}>
             <div className={styles.header_container}>
@@ -271,7 +314,7 @@ function SentRequests() {
                 sentRequests.map((request) => (
                     <div key={request.id} className={styles.selectedMateInfo}>
                         <div className={styles.img}></div>
-                        <div className={styles.chat_container}>
+                        <div className={styles.chat_container} onClick={() => openModal(request.friendTravelUserId)}>
                             <p className={styles.userName}>{request.friendTravelUserDto.name}</p>
                             <p>{request.friendTravelUserDto.location} • 궁합 {request.friendTravelUserDto.percentage}%</p>
                         </div>
@@ -281,6 +324,7 @@ function SentRequests() {
             ) : (
                 <p className={styles.noMateMessage}>보낸 요청이 없습니다.</p>
             )}
+            <Modal isOpen={modalOpen} onClose={closeModal} travelUserId={selectedUserId} />
         </div>
     );
 }
