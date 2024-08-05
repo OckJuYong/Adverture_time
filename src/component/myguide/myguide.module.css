@@ -1,0 +1,105 @@
+.mainbox {
+    width: 100vw;
+    height: 1080px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 92vw;
+    padding: 4vw;
+    margin-bottom: -3vh;
+}
+
+.backButton {
+    width: 3vw;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-right: 3vw;
+}
+
+.title {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 6vw;
+    font-weight: bold;
+    margin-right: 5vw;
+}
+
+.tabNav {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+    margin: 0;
+}
+
+.tabButton {
+    flex: 1;
+    padding: 15px 0;
+    background: none;
+    border: none;
+    font-size: 4.5vw;
+    color: #888;
+    position: relative;
+    margin-right: 0vw;
+}
+
+.tabButton.active {
+    color: #000;
+    font-weight: bold;
+}
+
+.tabButton.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 1vw;
+    background-color: #000;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 10vh;
+    overflow-y: auto;
+    max-height: 100vh;
+    font-size: 4vw;
+}
+
+.header_container {
+    margin-top: -0vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 99vw;
+    background-color: #F3F3F3;
+    height: 7vh;
+    justify-content: space-around;
+}
+
+.editButton {
+    top: -0.2vh;
+    background: none;
+    border: none;
+    font-size: 4vw;
+    margin-right: -15vw;
+}
+
+.noMateMessage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #888;
+    font-size: 16px;
+}
+
+/* 나머지 스타일들은 그대로 유지 */

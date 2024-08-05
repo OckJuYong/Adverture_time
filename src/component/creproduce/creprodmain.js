@@ -16,7 +16,7 @@ function Creprodmain() {
     const fetchRoutes = async () => {
       try {
         const memberId = localStorage.getItem('memberId');
-        const response = await axios.post('http://43.202.121.14:8000/recommend/route/', {
+        const response = await axios.post('https://seominjae.duckdns.org/recommend/route/', {
           travel_user_id: memberId,
           start_date: travelInfo.start_date,
           end_date: travelInfo.end_date,

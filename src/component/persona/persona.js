@@ -77,7 +77,7 @@ function Persona() {
 
     const fetchChatHistory = async () => {
       try {
-        const response = await axios.get(`http://43.202.121.14:8000/chat/${memberId}/`);
+        const response = await axios.get(`https://43.202.121.14/chat/${memberId}/`);
         console.log("서버 응답 데이터:", response.data);
         if (response.data.history && response.data.history.length > 0) {
           const parsedMessages = response.data.history.map(item => {
