@@ -38,7 +38,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  max-height: 100%;
+  max-height: calc(100% - 5vh); /* 입력 영역의 높이만큼 뺍니다 */
 }
 
 .message {
@@ -64,10 +64,10 @@
 
 .inputArea {
   display: flex;
-  padding: 0px;
+  padding: 10px;
   height: 5vh;
-  margin-bottom: 2vh;
-  margin-left: 3vw;
+  background-color: #FBF0D4;
+  border-top: 1px solid #e0e0e0;
 }
 
 .inputField {
@@ -86,4 +86,5 @@
   color: #6285E1;
   cursor: pointer;
   font-weight: bold;
+  padding: 0 10px;
 }

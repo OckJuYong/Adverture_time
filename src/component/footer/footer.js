@@ -18,7 +18,7 @@ function Footer() {
     // 현재 경로에 따라 activeIcon 설정
     if (location.pathname === '/home') {
       setActiveIcon(1);
-    } else if (location.pathname === '/frmatepage') {
+    } else if (location.pathname === '/frmatepage' || location.pathname === '/Managematepage') {
       setActiveIcon(3);
     } else if (location.pathname === '/insight') {  // 두 번째 아이콘의 경로 추가
       setActiveIcon(2);

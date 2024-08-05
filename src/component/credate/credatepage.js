@@ -6,9 +6,7 @@ function Credatepage(){
     return(
         <div>
         <Credateheader></Credateheader>
-        <Credatemain></Credatemain>
-        <Credatefooter></Credatefooter>
-        
+        <Credatemain></Credatemain>        
         </div>
     );
 

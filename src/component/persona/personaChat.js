@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import personasChatsty from "./personaChat.module.css";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import backBtn from '../logininput/back.png';
 import loading from './Loading.png';
 
@@ -53,71 +54,79 @@ function PersonaChat() {
   const [isWaitingForAIResponse, setIsWaitingForAIResponse] = useState(false);
   const [userMBTI, setUserMBTI] = useState(null);
   const chatContentRef = useRef(null);
-
-  const MAX_MESSAGES = 10; // 최대 표시할 메시지 수
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
-    const loadMessages = () => {
-      const savedMessages = localStorage.getItem('personaChatMessages');
-      if (savedMessages) {
-        setMessages(JSON.parse(savedMessages));
+    const memberId = localStorage.getItem('memberId');
+    const mbti = localStorage.getItem('taste_travel');
+    
+    if (mbti) {
+      const cleanedMBTI = mbti.replace(/['"]+/g, '').toUpperCase();
+      setUserMBTI(cleanedMBTI);
+    }
+
+    const fetchChatHistory = async () => {
+      try {
+        const response = await axios.get(`http://43.202.121.14:8000/chat/${memberId}/`);
+        console.log("서버 응답 데이터:", response.data);
+        if (response.data.history && response.data.history.length > 0) {
+          const parsedMessages = response.data.history.map(item => {
+            const [sender, text] = item.split(': ', 2);
+            return { sender: sender.toLowerCase(), text };
+          });
+          setMessages(parsedMessages);
+        } else if (response.data.ai_tell) {
+          setMessages([{ sender: 'ai', text: response.data.ai_tell }]);
+        }
+      } catch (error) {
+        console.error('채팅 기록을 불러오는 데 실패했습니다:', error);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
-    const loadUserMBTI = () => {
-      const mbti = localStorage.getItem('taste_travel');
-      if (mbti) {
-        const cleanedMBTI = mbti.replace(/['"]+/g, '').toUpperCase();
-        setUserMBTI(cleanedMBTI);
-      }
-    };
-
-    loadMessages();
-    loadUserMBTI();
+    fetchChatHistory();
   }, []);
 
   useEffect(() => {
-    if (!isLoading) {
-      localStorage.setItem('personaChatMessages', JSON.stringify(messages));
-    }
-    // 새 메시지가 추가될 때마다 스크롤을 맨 아래로 이동
-    if (chatContentRef.current) {
-      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
-    }
-  }, [messages, isLoading]);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
-  const goBack = () => {
+  const goBack = useCallback(() => {
     navigate('/home');
-  }
+  }, [navigate]);
 
-  const getBackgroundImage = () => {
+  const getBackgroundImage = useCallback(() => {
     if (userMBTI && mbtiImages[userMBTI]) {
       return mbtiImages[userMBTI];
     }
     return null;
-  };
+  }, [userMBTI]);
 
-  const handleSend = (e) => {
+  const handleSend = useCallback(async (e) => {
     e.preventDefault();
     if (input.trim()) {
       const newMessage = { text: input, sender: 'user' };
-      setMessages(prevMessages => {
-        const updatedMessages = [...prevMessages, newMessage];
-        return updatedMessages.slice(-MAX_MESSAGES);
-      });
+      setMessages(prevMessages => [...prevMessages, newMessage]);
       setInput('');
-      setIsWaitingForAIResponse(true);
-      setTimeout(() => {
-        setMessages(prevMessages => {
-          const aiMessage = { text: "AI의 응답입니다.", sender: 'ai' };
-          const updatedMessages = [...prevMessages, aiMessage];
-          return updatedMessages.slice(-MAX_MESSAGES);
+      // setIsWaitingForAIResponse(true);
+
+      const memberId = localStorage.getItem('memberId');
+      try {
+        const response = await axios.post(`http://43.202.121.14:8000/chat/${memberId}/`, {
+          person_tell: input
         });
-        setIsWaitingForAIResponse(false);
-      }, 1000);
+        console.log(response.data);
+        const aiMessage = { sender: 'ai', text: response.data.response };
+        setMessages(prevMessages => [...prevMessages, aiMessage]);
+        window.location.reload();
+      } catch (error) {
+        console.error('메시지 전송 중 오류가 발생했습니다:', error);
+      } finally {
+        // setIsWaitingForAIResponse(false);
+      }
     }
-  }
+  }, [input]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -183,11 +192,12 @@ function PersonaChat() {
               {message.text}
             </div>
           ))}
-          {isWaitingForAIResponse && (
+          {/* {isWaitingForAIResponse && (
             <div className={`${personasChatsty.message} ${personasChatsty.ai}`}>
               <img src={loading} alt="Loading" />
             </div>
-          )}
+          )} */}
+          <div ref={messagesEndRef} />
         </div>
       </div>
       <form onSubmit={handleSend} className={personasChatsty.inputArea}

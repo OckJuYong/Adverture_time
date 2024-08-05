@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useSwipeable } from 'react-swipeable';
+import { useNavigate } from "react-router-dom";
 import Crechoicestyle from "./crechoice.module.css";
 import Creprodmainstyle from "./creprodmain.module.css";
+import Crefooterstyle from './crefooter.module.css';
 
 function Crechoice() {
     const [recommendedPlaces, setRecommendedPlaces] = useState([]);
-    const [index1, setIndex1] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const navigate = useNavigate();
 
     const fetchRecommendedPlaces = async () => {
         try {
@@ -31,20 +34,29 @@ function Crechoice() {
         fetchRecommendedPlaces();
     }, []);
 
-    const handleSwipedLeft1 = () => {
-        setIndex1((prevIndex) => (prevIndex + 1) % recommendedPlaces.length);
-    };
-
-    const handleSwipedRight1 = () => {
-        setIndex1((prevIndex) => (prevIndex - 1 + recommendedPlaces.length) % recommendedPlaces.length);
-    };
-
-    const handlers1 = useSwipeable({
-        onSwipedLeft: handleSwipedLeft1,
-        onSwipedRight: handleSwipedRight1,
+    const handlers = useSwipeable({
+        onSwipedLeft: () => handleSwipe('left'),
+        onSwipedRight: () => handleSwipe('right'),
         preventDefaultTouchmoveEvent: true,
         trackMouse: true,
     });
+
+    const handleSwipe = (direction) => {
+        if (direction === 'left') {
+            setCurrentIndex((prevIndex) => (prevIndex + 1) % recommendedPlaces.length);
+        } else {
+            setCurrentIndex((prevIndex) => (prevIndex - 1 + recommendedPlaces.length) % recommendedPlaces.length);
+        }
+    };
+
+    const handleDatePageClick = () => {
+        if (recommendedPlaces.length > 0) {
+            const selectedPlace = recommendedPlaces[currentIndex];
+            navigate("/credatepage", { state: { selectedPlace: selectedPlace.place } });
+        } else {
+            alert("여행지를 선택해주세요.");
+        }
+    };
 
     return (
         <div className={Crechoicestyle.choicebox}>
@@ -54,16 +66,26 @@ function Crechoice() {
 
             <p className={Crechoicestyle.choicprtext}>알고리즘 추천 여행지</p>
 
-            <div {...handlers1} className={Creprodmainstyle.rcslider}>
+            <div {...handlers} className={Creprodmainstyle.rcslider}>
                 <div
                     className={Creprodmainstyle.rcslidercontainer1}
-                    style={{ transform: `translateX(-${index1 * 105}%)` }}
+                    style={{ transform: `translateX(-${currentIndex * 100}%)` }}
                 >
                     {recommendedPlaces.map((place, idx) => (
                         <div key={idx} className={Creprodmainstyle.rcslideritem1}>
                             <h3 className={Creprodmainstyle.placeName}>{place.place}</h3>
                         </div>
                     ))}
+                </div>
+            </div>
+            <div className={Crefooterstyle.crefootercontainer}>
+                <div className={Crefooterstyle.creleftbutton}>
+                    <div className={Crefooterstyle.crebuttontext1}>이전</div>
+                    <div className={Crefooterstyle.cresold1}></div>
+                </div>
+                <div className={Crefooterstyle.crerightbutton}>
+                    <div className={Crefooterstyle.crebuttontext2} onClick={handleDatePageClick}>다음</div>
+                    <div className={Crefooterstyle.cresold2}></div>
                 </div>
             </div>
         </div>

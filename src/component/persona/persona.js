@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import personastyle from "./persona.module.css";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import ENFJ from '../Img/ENFJ 시드니.png';
 // B1E8ED 076D91
@@ -58,7 +59,6 @@ const mbtiColors = {
   ISTJ: { background: '#DBCBB9', textBackground: '#6D6060' },
   ISTP: { background: '#F5EBCF', textBackground: '#037D68' }
 };
-
 function Persona() {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
@@ -67,25 +67,35 @@ function Persona() {
   const chatWrapperRef = useRef(null);
 
   useEffect(() => {
-    const loadMessages = () => {
-      const savedMessages = localStorage.getItem('personaChatMessages');
-      if (savedMessages) {
-        const parsedMessages = JSON.parse(savedMessages);
-        setMessages(parsedMessages.slice(-6));
+    const memberId = localStorage.getItem('memberId');
+    const mbti = localStorage.getItem('taste_travel');
+    
+    if (mbti) {
+      const cleanedMBTI = mbti.replace(/['"]+/g, '').toUpperCase();
+      setUserMBTI(cleanedMBTI);
+    }
+
+    const fetchChatHistory = async () => {
+      try {
+        const response = await axios.get(`http://43.202.121.14:8000/chat/${memberId}/`);
+        console.log("서버 응답 데이터:", response.data);
+        if (response.data.history && response.data.history.length > 0) {
+          const parsedMessages = response.data.history.map(item => {
+            const [sender, text] = item.split(': ', 2);
+            return { sender: sender.toLowerCase(), text };
+          });
+          setMessages(parsedMessages.slice(-5)); // 최근 6개 메시지만 표시
+        } else if (response.data.ai_tell) {
+          setMessages([{ sender: 'ai', text: response.data.ai_tell }]);
+        }
+      } catch (error) {
+        console.error('채팅 기록을 불러오는 데 실패했습니다:', error);
+      } finally {
+        setIsLoading(false);
       }
-      setIsLoading(false);
     };
 
-    const loadUserMBTI = () => {
-      const mbti = localStorage.getItem('taste_travel');
-      if (mbti) {
-        const cleanedMBTI = mbti.replace(/['"]+/g, '').toUpperCase();
-        setUserMBTI(cleanedMBTI);
-      }
-    };
-
-    loadMessages();
-    loadUserMBTI();
+    fetchChatHistory();
   }, []);
 
   useEffect(() => {
@@ -109,7 +119,7 @@ function Persona() {
     if (userMBTI && mbtiColors[userMBTI]) {
       return mbtiColors[userMBTI];
     }
-    return { background: '#FFFFFF', textBackground: '#000000' }; // 기본 색상
+    return { background: '#FFFFFF', textBackground: '#000000' };
   };
 
   if (isLoading) {

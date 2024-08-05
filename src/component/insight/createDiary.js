@@ -99,7 +99,11 @@ function CreateDiary() {
           <div>Loading...</div> // 로딩 메시지 표시
         ) : (
           <>
-            <img src={diary?.picture || NoneImg} alt="None" className={CreateDiarySty.img}/>
+            <img 
+              src={diary?.real_picture ? `http://43.202.121.14:8000${diary.real_picture}` : NoneImg} 
+              alt="Diary"
+              className={CreateDiarySty.img}
+            />
             <div className={CreateDiarySty.headerContainer}>
               <div className={CreateDiarySty.leftHeaderContainer}>
                 <h2>{travel}</h2>

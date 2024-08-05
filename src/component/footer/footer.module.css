@@ -7,14 +7,14 @@
     left: 0;
     right: 0;
     background-color: #f8f8f8;
-    height: 90px;
+    height: 7vh;
     z-index: 9999; /* z-index를 더 높게 설정 */
     box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* 상단에 그림자 추가 */
 }
 
 .icon {
-    width: 70px;
-    height: 70px;
+    width: 7vw;
+    height: 5vh;
     transition: transform 0.2s;
 }
 

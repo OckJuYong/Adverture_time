@@ -8,7 +8,6 @@ function CrePage1(){
         <div >
         <Creheader></Creheader>
         <Crechoice></Crechoice>
-        <Crefooter></Crefooter>
         </div>
     );
 
