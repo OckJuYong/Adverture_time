@@ -57,13 +57,7 @@ function Creprodfooter() {
 
     return (
         <div className={Creprodfooterstyle.prodfooterbox}>
-            <div className={Creprodfooterstyle.datecreleftbutton}>
-                <div className={Creprodfooterstyle.datecrebuttontext1} onClick={handlebackclick}>이전</div>
-                <div className={Creprodfooterstyle.datecresold1}></div>
-            </div>
-            <div className={Creprodfooterstyle.datecrerightbutton}>
-                <div className={Creprodfooterstyle.datecrebuttontext2} onClick={handlereturnclick}>매이트 매칭</div>
-            </div>
+
         </div>
     );
 }

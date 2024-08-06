@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import styles from "./myguide.module.css";  // 새로운 CSS 모듈 파일을 만드세요
+import Rating from 'react-rating-stars-component';
+import styles from "./myguide.module.css";
 
 import backBtn from '../logininput/back.png';
-
 import Footer from '../footer/footer';
+import user from './user.jpeg';
 
 import ENFJ from"../img2/ENFJ 시드니 (1).png"
 import ENFP from '../img2/ENFP 바르셀로나 (1).png';
@@ -33,9 +34,27 @@ function MyGuides() {
     const [myGuides, setMyGuides] = useState([]);
 
     useEffect(() => {
-        // 여기에 가이드 목록을 가져오는 API 호출 로직을 추가하세요
-        // 예: const fetchMyGuides = async () => { ... };
-        // fetchMyGuides();
+        const fetchMyGuides = async () => {
+            try {
+                const jwtToken = localStorage.getItem('jwtToken');
+                const config = {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                };
+
+                const response = await axios.get('https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/cart/reading/purchase-status?purchaseStatus=purchaseCompleted', config);
+                console.log(response.data)
+                setMyGuides(response.data);
+            } catch (error) {
+                console.error('Error fetching my guides:', error);
+                alert('가이드 정보를 가져오는 데 실패했습니다.');
+            }
+        };
+
+        fetchMyGuides();
     }, []);
 
     return (
@@ -46,11 +65,13 @@ function MyGuides() {
             </div>
             {myGuides.length > 0 ? (
                 myGuides.map((guide) => (
-                    <div key={guide.id} className={styles.selectedMateInfo}>
-                        <div className={styles.img}></div>
+                    <div key={guide.guideProposalDto.guideProposalId} className={styles.selectedMateInfo}>
                         <div className={styles.chat_container}>
-                            <p className={styles.userName}>{guide.name}</p>
-                            <p>{guide.location}</p>
+                            <p className={styles.goal}>{guide.guideProposalDto.goal}</p>
+                            <p className={styles.myname}>{guide.guideProposalDto.guideDto.name} GUIDE</p>
+                            <p className={styles.date1}> {new Date(guide.guideProposalDto.travelStartDate).toLocaleDateString()}~</p>
+                            <p className={styles.date2}>{new Date(guide.guideProposalDto.travelEndDate).toLocaleDateString()}</p>
+                            <p>Schedule: {guide.guideProposalDto.schedule}</p>
                         </div>
                     </div>
                 ))
@@ -65,10 +86,54 @@ function MyCart() {
     const [cartItems, setCartItems] = useState([]);
 
     useEffect(() => {
-        // 여기에 카트 아이템을 가져오는 API 호출 로직을 추가하세요
-        // 예: const fetchCartItems = async () => { ... };
-        // fetchCartItems();
+        const fetchCartItems = async () => {
+            try {
+                const jwtToken = localStorage.getItem('jwtToken');
+                const config = {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                const response = await axios.get(`https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/cart/reading/all`, config);
+                setCartItems(response.data);
+                console.log('Cart items:', response.data);
+            } catch (error) {
+                console.error('Error fetching cart items:', error);
+                alert('카트 정보를 가져오는 데 실패했습니다.');
+            }
+        };
+
+        fetchCartItems();
     }, []);
+
+    const handlePayment = async (guideProposalId) => {
+        try {
+            const jwtToken = localStorage.getItem('jwtToken');
+            const config = {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            const response = await axios.post(`https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/cart/purchase-product`, 
+                { 
+                    guideProposalId: guideProposalId 
+                },
+                config
+            );
+
+            if (response.status === 200) {
+                alert('결제가 성공적으로 완료되었습니다.');
+                setCartItems(prevItems => prevItems.filter(item => item.guideProposalDto.guideProposalId !== guideProposalId));
+            }
+        } catch (error) {
+            console.error('Error processing payment:', error);
+            alert('결제 처리 중 오류가 발생했습니다.');
+        }
+    };
 
     return (
         <div className={styles.content}>
@@ -78,11 +143,20 @@ function MyCart() {
             </div>
             {cartItems.length > 0 ? (
                 cartItems.map((item) => (
-                    <div key={item.id} className={styles.selectedMateInfo}>
+                    <div key={item.cartId} className={styles.selectedMateInfo}>
                         <div className={styles.img}></div>
                         <div className={styles.chat_container}>
-                            <p className={styles.userName}>{item.name}</p>
-                            <p>{item.description}</p>
+                            <p className={styles.goal}>{item.guideProposalDto.goal}</p>
+                            <p className={styles.myname}>{item.guideProposalDto.guideDto.name} GUIDE</p>
+                            <p className={styles.price}>{item.guideProposalDto.price}원</p>
+                            {item.guideProposalDto.purchaseStatus === "waitingForPayment" && (
+                                <button 
+                                    className={styles.paymentButton} 
+                                    onClick={() => handlePayment(item.guideProposalDto.guideProposalId)}
+                                >
+                                    결제하기
+                                </button>
+                            )}
                         </div>
                     </div>
                 ))
@@ -97,10 +171,56 @@ function MyTravelers() {
     const [myTravelers, setMyTravelers] = useState([]);
 
     useEffect(() => {
-        // 여기에 여행자 목록을 가져오는 API 호출 로직을 추가하세요
-        // 예: const fetchMyTravelers = async () => { ... };
-        // fetchMyTravelers();
+        const fetchTravelers = async () => {
+            try {
+                const jwtToken = localStorage.getItem('jwtToken');
+                const config = {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                };
+
+                const response = await axios.get(`https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/guide-proposal/reading/purchase-status?purchaseStatus=waitingForDecision`, config);
+                setMyTravelers(response.data);
+                console.log('Travelers info:', response.data);
+            } catch (error) {
+                console.error('Error fetching travelers info:', error);
+                alert('여행자 정보를 가져오는 데 실패했습니다.');
+            }
+        };
+
+        fetchTravelers();
     }, []);
+
+    const getGenderLabel = (gender) => {
+        return gender === 'M' ? '남자' : gender === 'F' ? '여자' : '';
+    };
+
+    const handleAccept = async (guideProposalId) => {
+        try {
+            const jwtToken = localStorage.getItem('jwtToken');
+            const config = {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            const response = await axios.patch(`https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/guide-proposal/acceptance`, 
+                { guideProposalId: guideProposalId }, 
+                config
+            );
+
+            if (response.status === 200) {
+                alert('가이드 제안을 수락했습니다.');
+                setMyTravelers(prevTravelers => prevTravelers.filter(traveler => traveler.guideProposalId !== guideProposalId));
+            }
+        } catch (error) {
+            console.error('Error accepting guide proposal:', error);
+            alert('가이드 제안을 수락하는 데 실패했습니다.');
+        }
+    };
 
     return (
         <div className={styles.content}>
@@ -110,11 +230,20 @@ function MyTravelers() {
             </div>
             {myTravelers.length > 0 ? (
                 myTravelers.map((traveler) => (
-                    <div key={traveler.id} className={styles.selectedMateInfo}>
+                    <div key={traveler.guideProposalId} className={styles.selectedMateInfo}>
                         <div className={styles.img}></div>
                         <div className={styles.chat_container}>
-                            <p className={styles.userName}>{traveler.name}</p>
-                            <p>{traveler.tripInfo}</p>
+                            <p className={styles.goal}>{traveler.goal}</p>
+                            <p className={styles.userName2}>{traveler.purchaseTravelUserDto.name}</p>
+                            <p className={styles.sex}>({getGenderLabel(traveler.purchaseTravelUserDto.gender)})</p>
+                            <p className={styles.price1}>가격: {traveler.price}원</p>
+                            <button 
+                                className={styles.tru1} 
+                                onClick={() => handleAccept(traveler.guideProposalId)}
+                            >
+                                수락
+                            </button>
+                            <button className={styles.fal1}>거절</button>
                         </div>
                     </div>
                 ))
@@ -125,9 +254,92 @@ function MyTravelers() {
     );
 }
 
+function GuideReviewModal({ isOpen, onClose, guide }) {
+    const [comment, setComment] = useState("");
+    const [rating, setRating] = useState(0);
+
+    const handleRatingChange = (newRating) => {
+      setRating(newRating);
+    };
+
+    if (!isOpen || !guide) return null;
+
+    const handleReviewSubmit = async () => {
+        try {
+            const jwtToken = localStorage.getItem('jwtToken');
+
+            const reviewData = {
+                guideReviewDto: {
+                    "comment": comment,
+                    "rating": rating
+                },
+                guideProposalDto: {
+                    guideProposalId: guide.guideProposalId
+                }
+            };
+
+            const config = {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwtToken}`
+                }
+            };
+            console.log(reviewData);
+
+            const response = await axios.post(`https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/review/addition`, reviewData, config);
+            console.log('Review submitted:', response.data);
+            alert('리뷰가 성공적으로 제출되었습니다!');
+            setComment("");
+            setRating(0);
+            onClose();
+        } catch (error) {
+            console.error('Error submitting review:', error);
+            alert('리뷰 제출 중 오류가 발생했습니다.');
+            setComment("");
+            setRating(0);
+            onClose();
+        }
+    };
+
+    return (
+        <div className={styles.modalOverlay}>
+            <div className={styles.modal}>
+                <button className={styles.closeButton} onClick={onClose}>X</button>
+                <div className={styles.modalHeader}>
+                    <h2>{guide.purchaseTravelUserDto.name}의 가이드 리뷰</h2>
+                    <p>지역: {guide.area || '정보 없음'}</p>
+                </div>
+                <div className={styles.modalContent}>
+                    <textarea
+                        className={styles.textarea}
+                        placeholder="리뷰를 작성하세요..."
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                    />
+                    <Rating
+                        count={5}
+                        value={rating}
+                        onChange={handleRatingChange}
+                        activeColor="#ffd700"
+                        isHalf={true}
+                        size={40}
+                        style={{ fontSize: '200px' }}
+                    />
+                    <p>별점: {rating}</p>
+                </div>
+                <button className={styles.submitButton} onClick={handleReviewSubmit}>
+                    가이드 리뷰하기
+                </button>
+            </div>
+        </div>
+    );
+}
 function ChatRoomList() {
     const [chatRooms, setChatRooms] = useState([]);
-    const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedGuide, setSelectedGuide] = useState(null);
+    const [list, setList] = useState([]); // list 상태 추가
 
     useEffect(() => {
         const fetchChatRooms = async () => {
@@ -136,66 +348,93 @@ function ChatRoomList() {
                 const config = {
                     withCredentials: true,
                     headers: {
-                        'Cookie': `jwtToken=${jwtToken}`
+                        'Content-Type': 'application/json',
                     }
                 };
-
-                const travelUserId = localStorage.getItem("memberId");
-
-                const response = await axios.get(`https://port-0-travelproject-umnqdut2blqqevwyb.sel4.cloudtype.app/chat/rooms/?travel_user_id=${travelUserId}`, config);
+    
+                const response = await axios.get(`https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/guide-proposal/reading/purchase-status?purchaseStatus=travelCompleted`, config);
+                
+                console.log('Fetched chat rooms:', response.data); // 데이터 확인을 위한 로그
+    
+                const guideProposalIds = response.data.map(room => room.guideProposalId);
+                setList(guideProposalIds); // guideProposalId 값을 list에 저장
                 setChatRooms(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching chat rooms:', error);
             }
         };
-
+    
         fetchChatRooms();
     }, []);
 
-    const handleRoomSelect = (roomId) => {
-        navigate(`/chat-room/${roomId}`);
+    const handleRoomSelect = (guide) => {
+        setSelectedGuide(guide);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+        setSelectedGuide(null);
     };
 
     return (
         <div className={styles.content}>
             <div className={styles.header_container}>
-                <p className={styles.count}>채팅방 {chatRooms.length}개</p>
+                <p className={styles.count}>가이드 리뷰 {chatRooms.length}개</p>
             </div>
             {chatRooms.length > 0 ? (
-                chatRooms.map((room) => {
-                    const otherUser = room.users.find(user => user.travel_user_id !== parseInt(localStorage.getItem("memberId")));
-                    const otherUserMBTI = localStorage.getItem(otherUser.travel_user_id);
-
-                    return (
-                        <div key={room.id} className={styles.selectedMateInfo} onClick={() => handleRoomSelect(room.id)}>
-                            <div className={styles.img}>
-                                {otherUserMBTI && (
-                                    <img
-                                        src={mbtiImages[otherUserMBTI]}
-                                        alt={`${otherUserMBTI} avatar`}
-                                        className={styles.avatarImg}
-                                    />
-                                )}
-                            </div>
-                            <div className={styles.chat_container}>
-                                <p className={styles.userName}>{otherUserMBTI ? `${otherUserMBTI} 페르소나` : "알 수 없는 사용자"}</p>
-                                <p>{room.latest_message ? room.latest_message : "최근 메시지가 없습니다."}</p>
+                chatRooms.map((room) => (
+                    <div key={room.guideProposalId} className={styles.selectedMateInfo} onClick={() => handleRoomSelect(room)}>
+                        <div className={styles.chat_container}>
+                            <img src={user} className={styles.user}/>
+                            <div className={styles.title_container}>
+                                <p className={styles.userName}>{room.purchaseTravelUserDto.name}</p>
+                                <p className={styles.userAddress}>지역: {room.area || '정보 없음'}</p>
                             </div>
                         </div>
-                    );
-                })
+                    </div>
+                ))
             ) : (
-                <p className={styles.noMateMessage}>채팅방이 없습니다.</p>
+                <p className={styles.noMateMessage}>가이드 리뷰가 없습니다.</p>
             )}
+
+            {/* 모달 컴포넌트 렌더링 */}
+            <GuideReviewModal 
+                isOpen={isModalOpen} 
+                onClose={handleCloseModal} 
+                guide={selectedGuide} 
+            />
         </div>
     );
 }
-
 function Manageguide() {
     const location = useLocation();
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState('myGuides');
+    const [isGuide, setIsGuide] = useState(false);
+
+    useEffect(() => {
+        // 사용자의 역할을 확인하는 함수
+        const checkUserRole = async () => {
+            try {
+                const jwtToken = localStorage.getItem('jwtToken');
+                const config = {
+                    headers: {
+                        'Authorization': `Bearer ${jwtToken}`
+                    }
+                };
+                const response = await axios.get('https://your-api-url.com/user-role', config);
+                if (response.data.role === 'guide') {
+                    setIsGuide(true);
+                    navigate('/myguide');
+                }
+            } catch (error) {
+                console.error('Error checking user role:', error);
+            }
+        };
+
+        checkUserRole();
+    }, [navigate]);
 
     const handleBack = () => {
         navigate(-1);
@@ -216,10 +455,14 @@ function Manageguide() {
         }
     };
 
+    if (isGuide) {
+        return null; // 가이드인 경우 이 컴포넌트는 렌더링하지 않음
+    }
+
     return (
         <div className={styles.mainbox}>
             <header className={styles.header}>
-                <img src={backBtn} className={styles.backButton} onClick={handleBack} alt="Back"/>
+                <img src={backBtn} className={styles.backButton} onClick={handleBack}/>
                 <h1 className={styles.title}>가이드 관리</h1>
             </header>
             
@@ -250,9 +493,7 @@ function Manageguide() {
                 </button>
             </nav>
             
-            <div className={styles.content}>
-                {renderContent()}
-            </div>
+            {renderContent()}
 
             <Footer />
         </div>

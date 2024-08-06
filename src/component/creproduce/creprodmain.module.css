@@ -1,23 +1,27 @@
-.pordmainbox{
+/* 전체 레이아웃과 관련된 기존 스타일 */
+.pordmainbox {
     position: absolute;
 }
-.credatemaintext1{
+
+.credatemaintext1 {
     font-weight: 400;
     margin-left: 20vw;
     font-size: 4vw;
 }
-.credatemaintext2{
-    
+
+.credatemaintext2 {
     font-weight: 400;
     margin-left: 20vw;
     font-size: 4vw;
     margin-top: -4vw;
 }
-.choicprtext{
+
+.choicprtext {
     margin-left: 20vw;
     margin-top: -1vw;
 }
-.rcslider{
+
+.rcslider {
     position: relative;
     width: 100%;
     overflow: hidden;
@@ -26,107 +30,99 @@
     padding-right: 20%;
     padding-top: 10%;
 }
-.rcslidercontainer1{
+
+.rcslidercontainer1 {
     display: flex;
     transition: transform 0.3s ease-in-out;
     width: 70vw;
     height: 40vh;
     margin-left: 20%;
 }
-.rcslideritem1{
+
+.rcslideritem1 {
     border-radius: 4vw;
     margin-left: 2%;
-    flex: 0 0 100%; 
+    flex: 0 0 100%;
     width: 10vw !important;
     height: 38vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: 2em;
     border: 3px solid #2D5BD2;
-    
-    
+    box-sizing: border-box; /* Ensure padding is included in the element's width and height */
 }
-.traveltext{
+
+.traveltext {
     position: absolute;
-    font-size: 3vh;
+    font-size: 2.5vh;
     font-weight: 540;
     margin-top: -55%;
     margin-left: -45%;
-
+    white-space: nowrap; /* 줄바꿈 방지 */
+    font-size: clamp(2.5vh, 2.5vh, 2.5vh); /* 글자 수에 따라 폰트 크기 조절 */
 }
-.traveldatetext{
+
+.traveldatetext {
     position: absolute;
     font-size: 2.4vh;
     font-weight: 370;
     margin-top: -34%;
     margin-left: -60%;
+    white-space: nowrap; /* 줄바꿈 방지 */
 }
-.traveltimetext{
+
+.traveltimetext {
     position: absolute;
     font-size: 2vh;
     font-weight: 500;
     margin-top: -40%;
     margin-left: 54%;
+    white-space: nowrap; /* 줄바꿈 방지 */
 }
-.traveltime1text{
-    position: absolute;
-    font-size: 1.8vh;
-    
-    margin-top: -38%;
-    margin-left: 49.8%;
-}
-.userinfobox{
+
+.userinfobox {
     margin-top: 50%;
-    border-bottom-left-radius: 4vw; 
+    border-bottom-left-radius: 4vw;
     border-bottom-right-radius: 4vw;
     font-size: 2.5vw;
     font-weight: 500;
     width: 100%;
     height: 50%;
     background-color: #EAF0FF;
-   
-}
-.usercousbox{
-    margin-top: -3%;
-    margin-left: 30%;
-
-}
-.abox{
-    margin-left: 17%;
-    position: absolute;
-    margin-top: -57%;
-}
-.a1box{
-    margin-left: 17%;
-    position: absolute;
-    margin-top: -46%;
-}
-.a2box{
-    margin-left: 17%;
-    position: absolute;
-    margin-top: -36%;
-}
-.a3box{
-    margin-left: 17%;
-    position: absolute;
-    margin-top: -25%;
-}
-.a4box{
-    margin-left: 17%;
-    position: absolute;
-    margin-top: -15%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20%;
+    box-sizing: border-box;
 }
 
+.usercousbox {
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5vh; /* 아이템 사이의 간격 조정 */
+    box-sizing: border-box;
+}
 
-.circle{
-    margin-left: 3%;
-    width: 2vh;     
-    height: 2vh; 
+.circle {
+    margin-right: 5px; /* 텍스트와 점 사이의 간격 조정 */
+    width: 1.5vh; /* 점의 크기 조정 */
+    height: 1.5vh;
     border-radius: 50%;
     background-color: #2D5BD2;
-    margin-bottom: 1vh; 
 }
+
+.usercousbox div {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%; /* 필요에 따라 조정 가능 */
+}
+
 .aline1,
 .aline2 {
     margin-top: 20%;
@@ -136,6 +132,103 @@
     background-color: black;
     margin-bottom: -1.5vh; /* 요소 간 간격 */
 }
-.aline1{
+
+.aline1 {
     margin-top: -2%;
+}
+
+/* 모달 관련 스타일 */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1001;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.closeButton {
+    position: absolute;
+    top: 2vh;
+    right: 3vw;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #333;
+    padding: 5px;
+    border-radius: 50%;
+    font-size: 1.5em;
+}
+
+.closeButton:hover {
+    background: #f0f0f0;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.modalHeader h2 {
+    margin: 0;
+    font-size: 2.5em;
+    color: #333;
+}
+
+.modalContent {
+    font-size: 1.2em;
+    color: #555;
+    line-height: 1.6;
+}
+
+.modalContent ul {
+    list-style: none;
+    padding: 0;
+}
+
+.modalContent ul li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    border: 1px solid #eee;
+}
+
+/* 모달 애니메이션 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.container {
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-top: -3vh !important;
 }

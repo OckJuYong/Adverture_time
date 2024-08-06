@@ -5,37 +5,21 @@ import styles from "./mateprop.module.css";
 import { useSwipeable } from 'react-swipeable';
 
 import ENFJ from '../Img/ENFJ 시드니.png';
-// B1E8ED 076D91
 import ENFP from '../Img/ENFP 바르셀로나.png';
-// F8E8BC E66027
 import ENTJ from '../Img/ENTJ 뉴욕.png';
-// EAE1BF B65025
 import ENTP from '../Img/ENTP 런던.png';
-// E4D8C9 665049
 import ESFJ from '../Img/ESFJ 라스베이거스.png';
-// C9E7F2 003A87
 import ESFP from '../Img/ESFP 암스테르담.png';
-// FDEBE7 FF957E
 import ESTJ from '../Img/ESTJ 서울.png';
-// F6EBDA DC4432
 import ESTP from '../Img/ESTP 홍콩.png';
-// D7DFE5 174A87
 import INFJ from '../Img/INFJ 센프란시스코.png';
-// C4BBB6 814722
 import INFP from '../Img/INFP 파리.png';
-// FFDCD4 F47046
 import INTJ from '../Img/INTJ 싱가포르.png';
-// E1EFE8 367B90
 import INTP from '../Img/INTP 베를린.png';
-// D1C6BF 603B3D
 import ISFJ from '../Img/ISFJ 교토.png';
-// FCDEC7 4F556D
 import ISFP from '../Img/ISFP 리우데자네이루.png';
-// FFD4AE F03526
 import ISTJ from '../Img/ISTJ 도쿄.png';
-// DBCBB9 6D6060
 import ISTP from '../Img/ISTP 부다페스트.png';
-// F5EBCF 037D68
 
 function Mateprop1() {
 
@@ -56,9 +40,9 @@ function Mateprop1() {
         ISFP: ISFP,
         ISTJ: ISTJ,
         ISTP: ISTP
-      };
+    };
 
-      const mbtiToCityMap = {
+    const mbtiToCityMap = {
         ENFJ: "시드니",
         ENFP: "바르셀로나",
         ENTJ: "뉴욕",
@@ -75,12 +59,20 @@ function Mateprop1() {
         ISFP: "리우데자네이루",
         ISTJ: "도쿄",
         ISTP: "부다페스트"
-      };
-      
+    };
+    
     const [index1, setIndex1] = useState(0);
     const [slides, setSlides] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
+
+    // 이전 페이지에서 넘어온 데이터를 받아옵니다.
+    const travelData = location.state;
+
+    // state 확인 로그 추가
+    useEffect(() => {
+        console.log("Received travelData:", travelData);
+    }, [travelData]);
 
     const [myMates, setMyMates] = useState([]);
     const [personaData, setPersonaData] = useState(null);
@@ -101,12 +93,9 @@ function Mateprop1() {
 
                 const response = await axios.get('https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/friend/friend-list', config);
                 setMyMates(response.data);
-                console.log(response.data);
 
                 const travelUserIds = response.data.map(mate => mate.friendTravelUserId);
                 const travelUserIdsObject = { list: travelUserIds };
-
-                console.log(JSON.stringify(travelUserIdsObject));
                 setList(travelUserIdsObject);
                 
             } catch (error) {
@@ -132,15 +121,15 @@ function Mateprop1() {
                         'Content-Type': 'application/json',
                     }
                 });
-                console.log('Persona data:', response.data);
                 setPersonaData(response.data);
+                console.log(response.data);
 
                 // 여기서 받아온 데이터를 slides 형식에 맞게 변환
                 const newSlides = response.data.list.map(item => ({
                     percentage: item.compatibility,
                     name: item.tendency,
                     location: `Travel User ID: ${item.travel_user_id}`,
-                    travelUserId: item.travel_user_id,
+                    travelUserId: item.travel_user_id, // 제안할 유저 ID
                     ei: item.ei,
                     sn: item.sn,
                     ft: item.ft,
@@ -149,7 +138,6 @@ function Mateprop1() {
                 setSlides(newSlides);
             } catch (error) {
                 console.error('Error fetching persona data:', error);
-                console.log(list);
             }
         };
 
@@ -178,7 +166,7 @@ function Mateprop1() {
     };
 
     const handlePropose = async () => {
-        const selectedSlide = slides[index1];
+        const selectedSlide = slides[index1]; // 현재 선택된 슬라이드
         const jwtToken = localStorage.getItem('jwtToken');
         const jwtRefreshToken = localStorage.getItem('jwtRefreshToken');
     
@@ -186,21 +174,68 @@ function Mateprop1() {
             withCredentials: true,
             headers: {
                 'jwtToken': jwtToken,
-                'jwtRefreshToken': jwtRefreshToken
+                'jwtRefreshToken': jwtRefreshToken,
+                'Content-Type': 'application/json',
             }
         };
     
+        const payload = {
+            offeredTravelUserId: selectedSlide.travelUserId, // 선택된 슬라이드에서 유저 ID 가져오기
+            travel: {
+                travelId: travelData.travelId,
+                travelStartDate: travelData.travelStartDate,
+                travelEndDate: travelData.travelEndDate,
+                location: travelData.location,
+                latitude: travelData.latitude,
+                longitude: travelData.longitude,
+                travelUserId: travelData.travelUserId,
+                mateUserDto: null,
+                travelRoute: travelData.travelRoute.map(route => ({
+                    travelRouteId: route.travelRouteId,
+                    travelId: route.travelId,
+                    vertex: route.vertex,
+                    latitude: route.latitude,
+                    longitude: route.longitude
+                }))
+            }
+        };
+    
+        console.log('Payload to be sent:', payload); // 전송할 데이터를 확인하는 로그
+    
         try {
-            const response = await axios.post('https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/friend/additional', {
-                friendTravelUserId: selectedSlide.travelUserId
-            }, config);
+            const response = await axios.post('https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/proposal/addition', payload, config);
             console.log('Propose response:', response.data);
-            alert('친구 요청이 성공적으로 전송되었습니다!');
+            alert('여행 제안이 성공적으로 전송되었습니다!');
             navigate("/Managematepage");
         } catch (error) {
             console.error('Error proposing:', error);
-            console.log(selectedSlide.travelUserId);
-            alert('친구 요청 전송 중 오류가 발생했습니다. 다시 시도해주세요.');
+            alert('여행 제안 전송 중 오류가 발생했습니다. 다시 시도해주세요.');
+        }
+    };
+
+    const handleFriendAdd = async (friendTravelUserId) => {
+        try {
+            const jwtToken = localStorage.getItem('jwtToken');
+            const jwtRefreshToken = localStorage.getItem('jwtRefreshToken');
+
+            const config = {
+                withCredentials: true,
+                headers: {
+                    'jwtToken': jwtToken,
+                    'jwtRefreshToken': jwtRefreshToken,
+                    'Content-Type': 'application/json',
+                }
+            };
+
+            const payload = { friendTravelUserId };
+
+            const response = await axios.post('https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/friend/additional', payload, config);
+            console.log('Friend request response:', response.data);
+            alert('친구 요청이 성공적으로 전송되었습니다!');
+        } catch (error) {
+            console.error('Error sending friend request:', error.response.data);
+            console.log(friendTravelUserId);
+            alert(error.response.data);
         }
     };
 
@@ -226,6 +261,7 @@ function Mateprop1() {
                                         <span className={styles.percentageLabel}>여행 궁합</span>
                                         <span className={styles.percentage}>{slide.percentage}%</span>
                                     </div>
+                                    <div className={styles.friend_plus} onClick={() => handleFriendAdd(slide.travelUserId)}>+</div>
                                     <img src={mbtiImages[slide.name]} alt={slide.name} className={styles.mbtiImage} />
                                     <h2 className={styles.slideName}>{mbtiToCityMap[slide.name]}형 페르소나</h2>
                                     <div className={styles.barGraph}>

@@ -100,7 +100,7 @@ function CreateDiary() {
         ) : (
           <>
             <img 
-              src={diary?.real_picture ? `http://43.202.121.14:8000${diary.real_picture}` : NoneImg} 
+              src={diary?.real_picture ? `https://seominjae.duckdns.org/${diary.real_picture}` : NoneImg} 
               alt="Diary"
               className={CreateDiarySty.img}
             />

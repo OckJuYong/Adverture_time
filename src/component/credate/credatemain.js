@@ -22,8 +22,8 @@ function Credatemain() {
     const handlereturnclick = () => {
         if (dateRange[0] && dateRange[1] && selectedPlace) {
             const travelInfo = {
-                start_date: formatDateForAPI(dateRange[0]),
-                end_date: formatDateForAPI(dateRange[1]),
+                start_date: dateRange[0],
+                end_date: dateRange[1],
                 place: selectedPlace
             };
             navigate("/creproducepage", { state: travelInfo });

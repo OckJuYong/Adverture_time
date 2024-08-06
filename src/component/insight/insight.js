@@ -36,8 +36,8 @@ function Home() {
 
     try {
       const url = activeTab === 'liked' 
-        ? `http://43.202.121.14:8000/diary/${memberId}/liked/` 
-        : `http://43.202.121.14:8000/diary/${memberId}/`;
+        ? `https://seominjae.duckdns.org/diary/${memberId}/liked/` 
+        : `https://seominjae.duckdns.org/diary/${memberId}/`;
 
       const response = await axios.get(url, {
         withCredentials: false,
@@ -92,7 +92,7 @@ function Home() {
     const newLikeStatus = !diary.like;
     
     try {
-      await axios.post(`http://43.202.121.14:8000/diary/${memberId}/detail/${diary.id}/`, {
+      await axios.post(`https://seominjae.duckdns.org/diary/${memberId}/detail/${diary.id}/`, {
         like: newLikeStatus
       }, {
         headers: {
@@ -140,7 +140,7 @@ function Home() {
               <div key={index} className={Sty.diary_item} onClick={() => openModal(diary)}>
                 <div className={Sty.imageWrapper}>
                   <img 
-                    src={diary.picture ? `http://43.202.121.14:8000/${diary.picture}` : NoneImg} 
+                    src={diary.picture ? `https://seominjae.duckdns.org/${diary.picture}` : NoneImg} 
                     alt={`Diary ${index + 1}`} 
                     className={Sty.diary_image} 
                   />
@@ -181,7 +181,7 @@ function Modal({ diary, closeModal, toggleLike }) {
       <div className={Sty.modal}>
         <button className={Sty.closeButton} onClick={closeModal}>X</button>
         <img 
-          src={diary.picture ? `http://43.202.121.14:8000/${diary.picture}` : NoneImg} 
+          src={diary.picture ? `https://seominjae.duckdns.org/${diary.picture}` : NoneImg} 
           alt="Diary" 
           className={Sty.modalImage} 
         />

@@ -46,6 +46,7 @@ import ChatRoomTest from './component/test/checklist';
 
 import ChatRoomPage  from './component/manage_mate/ChatRoomPage';
 
+import Createguide from './component/create_guide/createguide';
 import Manageguide from './component/myguide/myguide';
 
 
@@ -98,6 +99,7 @@ function App() {
         <Route path="/chat-room/:roomId" element={<ChatRoomPage />} />
 
         <Route path="/myguide" element={< Manageguide />} />
+        <Route path="/createguide" element={<Createguide />} />
 
           </Routes>
         </div>

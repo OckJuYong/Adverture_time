@@ -201,11 +201,11 @@ function InsightWrite() {
   const backgroundImage = getBackgroundImage();
 
   return (
-    <div className={styles.chatFullScreen} style={{ backgroundColor: background }}>
+    <div className={styles.chatFullScreen} style={{ backgroundColor: "white" }}>
       {showTitleModal && (
         <div className={styles.modal}>
           <div className={styles.modalContent}>
-            <h2>이번 여행의 제목을 정해주세요</h2>
+            <h2 className={styles.title}>이번 여행의 제목을 정해주세요</h2>
             <form onSubmit={handleTitleSubmit}>
               <input
                 type="text"

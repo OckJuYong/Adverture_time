@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import Creprodmainstyle from "./creprodmain.module.css";
 import { useSwipeable } from "react-swipeable";
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Creprodmainstyle from "./creprodmain.module.css";
+import Creprodfooterstyle from "./creprodfooter.module.css";
 
 function Creprodmain() {
   const [index, setIndex] = useState(0);
   const [sortedRoutes, setSortedRoutes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedRouteDetails, setSelectedRouteDetails] = useState(null);
 
   const location = useLocation();
+  const navigate = useNavigate();
   const travelInfo = location.state;
 
   useEffect(() => {
@@ -23,9 +27,13 @@ function Creprodmain() {
           place: travelInfo.place
         });
         
-        const optimizedRoutes = response.data.map(optimizeRoute);
-        console.log(optimizedRoutes);
-        setSortedRoutes(optimizedRoutes);
+        if (response.data && Array.isArray(response.data)) {
+          const optimizedRoutes = response.data.map(optimizeRoute);
+          console.log(optimizedRoutes);
+          setSortedRoutes(optimizedRoutes);
+        } else {
+          console.error('Invalid data format:', response.data);
+        }
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching routes:', error);
@@ -36,7 +44,6 @@ function Creprodmain() {
     fetchRoutes();
   }, [travelInfo]);
 
-  // 두 지점 간의 거리 계산 (Haversine 공식 사용)
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const R = 6371; // 지구의 반경 (km)
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -49,8 +56,8 @@ function Creprodmain() {
     return R * c;
   };
 
-  // 최적의 경로 계산 (Nearest Neighbor 알고리즘)
   const optimizeRoute = (route) => {
+    if (!route || route.length === 0) return [];
     const optimizedRoute = [route[0]];
     const unvisited = route.slice(1);
 
@@ -94,9 +101,9 @@ function Creprodmain() {
 
   const calculateTimes = (route) => {
     const startTime = new Date();
-    startTime.setHours(9, 0, 0, 0); // 시작 시간을 오전 9시로 설정
+    startTime.setHours(9, 0, 0, 0);
 
-    const totalDuration = route.length * 90; // 각 경로당 90분(1시간 30분)
+    const totalDuration = route.length * 90;
     const endTime = new Date(startTime.getTime() + totalDuration * 60000);
 
     return {
@@ -105,6 +112,65 @@ function Creprodmain() {
       startTimeString: startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       endTimeString: endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
+  };
+
+  const handlebackclick = () => {
+    navigate("/credatepage");
+  };
+
+  const handleRouteClick = (route) => {
+    setSelectedRouteDetails(route);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedRouteDetails(null);
+  };
+
+  const handlereturnclick = async () => {
+    try {
+        const startDate = new Date(travelInfo.start_date).toISOString();
+        const endDate = new Date(travelInfo.end_date).toISOString();
+
+        const selectedRoute = sortedRoutes[index];
+
+        const firstPlace = selectedRoute[0];
+
+        const travelRoute = selectedRoute.map(place => ({
+            vertex: place.location,
+            latitude: place.latitude,
+            longitude: place.longitude
+        }));
+
+        console.log(travelRoute, startDate, endDate);
+
+        const response = await axios.post(
+            'https://port-0-travelproject-9zxht12blqj9n2fu.sel4.cloudtype.app/travel/addition',
+            {
+                travelStartDate: startDate,
+                travelEndDate: endDate,
+                location: travelInfo.place,
+                latitude: firstPlace.latitude,
+                longitude: firstPlace.longitude,
+                travelRoute: travelRoute
+            },
+            {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+        );
+
+        if (response.status === 200) {
+            navigate("/mateporp1", { state: response.data });
+        } else {
+            console.error('Match failed');
+        }
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
+    }
   };
 
   if (isLoading) {
@@ -123,9 +189,13 @@ function Creprodmain() {
           style={{ transform: `translateX(-${index * 100}%)` }}
         >
           {sortedRoutes.map((route, routeIndex) => {
+            if (!route || route.length === 0) {
+              return <div key={routeIndex} className={Creprodmainstyle.rcslideritem1}>No Data Available</div>;
+            }
+
             const { totalHours, totalMinutes, startTimeString, endTimeString } = calculateTimes(route);
             return (
-              <div key={routeIndex} className={Creprodmainstyle.rcslideritem1}>
+              <div key={routeIndex} className={Creprodmainstyle.rcslideritem1} onClick={() => handleRouteClick(route)}>
                 <p className={Creprodmainstyle.traveltext}>{travelInfo.place} 여행</p>
                 <p className={Creprodmainstyle.traveldatetext}>
                   {new Date(travelInfo.start_date).getMonth() + 1}월 중
@@ -136,31 +206,54 @@ function Creprodmain() {
                 <div className={Creprodmainstyle.userinfobox}>
                   <div className={Creprodmainstyle.usercousbox}>
                     {route.map((place, placeIndex) => (
-                      <p key={placeIndex} className={Creprodmainstyle[`cous${placeIndex + 1}`]}>
-                        {place.location}
-                      </p>
+                      <div key={placeIndex} style={{ display: 'flex', alignItems: 'center' }} className={Creprodmainstyle.container}>
+                        <span className={Creprodmainstyle.circle}></span>
+                        <p className={Creprodmainstyle[`cous${placeIndex + 1}`]}>
+                          {place.location}
+                        </p>
+                      </div>
                     ))}
                   </div>
-                  {route.map((_, placeIndex) => (
-                    <div key={placeIndex} className={Creprodmainstyle[`a${placeIndex}box`]}>
-                      <p className={Creprodmainstyle.circle}></p>
-                      {placeIndex < route.length - 1 && (
-                        <>
-                          <p className={Creprodmainstyle.aline1}></p>
-                          <p className={Creprodmainstyle.aline2}></p>
-                        </>
-                      )}
-                    </div>
-                  ))}
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+
+      {/* Modal for detailed route information */}
+      {showModal && selectedRouteDetails && (
+        <div className={Creprodmainstyle.modalOverlay}>
+          <div className={Creprodmainstyle.modal}>
+            <div className={Creprodmainstyle.modalHeader}>
+              <h2>경로 세부 정보</h2>
+              <button className={Creprodmainstyle.closeButton} onClick={closeModal}>닫기</button>
+            </div>
+            <div className={Creprodmainstyle.modalContent}>
+              <ul>
+                {selectedRouteDetails.map((place, index) => (
+                  <li key={index}>
+                    <strong>{place.location}</strong>
+                    <p>{place.description}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className={Creprodfooterstyle.prodfooterbox}>
+        <div className={Creprodfooterstyle.datecreleftbutton}>
+          <div className={Creprodfooterstyle.datecrebuttontext1} onClick={handlebackclick}>이전</div>
+          <div className={Creprodfooterstyle.datecresold1}></div>
+        </div>
+        <div className={Creprodfooterstyle.datecrerightbutton}>
+          <div className={Creprodfooterstyle.datecrebuttontext2} onClick={handlereturnclick}>매이트 매칭</div>
+        </div>
+      </div>
     </div>
   );
 }
-
 
 export default Creprodmain;

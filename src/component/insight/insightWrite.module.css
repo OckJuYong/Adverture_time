@@ -181,3 +181,72 @@
   background-color: none;
   border: none;
 }
+
+.chatFullScreen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f5f7fa;
+  padding: 20px;
+  margin-top: -20vh;
+}
+
+.title {
+  color: #6285E1;
+  font-size: 28px;
+  margin-bottom: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.titleForm {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.titleInput {
+  width: 80%;
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 2px solid #6285E1;
+  border-radius: 12px;
+  font-size: 18px;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(98, 133, 225, 0.1);
+}
+
+.titleInput:focus {
+  border-color: #4A67D0;
+  box-shadow: 0 4px 10px rgba(98, 133, 225, 0.2);
+}
+
+.titleSubmitButton {
+  width: 30%;
+  padding: 15px;
+  background-color: #6285E1;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(98, 133, 225, 0.2);
+  margin-left: 35vw;
+}
+
+.titleSubmitButton:hover {
+  background-color: #4A67D0;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(98, 133, 225, 0.3);
+}
+
+.titleSubmitButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(98, 133, 225, 0.2);
+}

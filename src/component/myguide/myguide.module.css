@@ -102,4 +102,113 @@
     font-size: 16px;
 }
 
-/* 나머지 스타일들은 그대로 유지 */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .modalHeader {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .modalHeader h2 {
+    margin: 0;
+    font-size: 5vw;
+    text-align: center;
+  }
+  
+  .modalHeader p {
+    margin: 0;
+    font-size: 4vw;
+    text-align: center;
+    color: #666;
+  }
+  
+  .modalContent {
+    margin-top: 20px;
+  }
+  
+  .modalContent p {
+    font-size: 4vw;
+    margin: 10px 0;
+  }
+  
+  .textarea {
+    width: 100%;
+    height: 20vh;
+    font-size: 0.8em;
+  }
+
+  .stars {
+    width: 100%;
+    height: 30vh;
+    font-size: 10vw;
+  }
+
+  .stars span {
+    width: 30vw;
+  }
+
+  .chat_container {
+    border-bottom: 1px solid #E1EFE8;
+  }
+
+.chat_container {
+    display: flex;
+    flex-direction: row;
+}
+
+.user {
+    border-radius: 90%;
+    width: 11%;
+    height: 10%;
+    margin-top: 6%;
+    margin-left: 2%;
+}
+
+.title_container {
+    margin-left: 5vw;
+}
+
+.userName {
+    font-size: 5vw;
+    font-weight: bold;
+}
+
+.userAddress {
+    font-size: 3vw;
+    margin-top: -2vh;
+}

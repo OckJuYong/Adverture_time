@@ -1,0 +1,139 @@
+.container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    margin-top: 10vh;
+}
+
+
+.title {
+    font-size: 6vw;
+    margin-bottom: 20px;
+    width: 90vw;
+}
+
+.address {
+    position: absolute;
+    right: 10vw;
+    top: 15.5vh;
+    width: 10vw;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    color: #4674F0;
+    background-color: #D3E7FF;
+    font-weight: bold;
+    font-size: 3vw;
+}
+
+
+.line {
+    border-bottom: 1px solid #007bff;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5vh;
+}
+
+
+
+.formGroup label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.formGroup input,
+.formGroup textarea,
+.formGroup select {
+    width: 70%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: #F8F8F8;  /* 배경색 변경 */
+    margin-left: 3vw;
+}
+.formGroup textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+.dateGroup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    margin-top: -3vh;
+}
+
+.dateGroup .formGroup {
+    width: 45%; /* 조금 줄여서 가운데 공간 확보 */
+}
+
+.anfruf {
+    margin-top: 5vh; /* 상단 마진 제거 */
+    font-size: 4vw;
+    padding: 0 10px; /* 좌우 패딩 추가 */
+}
+
+.formGroup input[type="datetime-local"] {
+    width: 100%; /* 입력 필드 너비 최대화 */
+    margin-left: 0; /* 왼쪽 마진 제거 */
+}
+
+
+.submitButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 30vw;
+    margin-left: 25vw;
+    margin-top: 5vh;
+}
+
+.submitButton:hover {
+    background-color: #0056b3;
+}
+
+.formGroup_won {
+    font-size: 3vw;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5vh;
+}
+
+.formGroup_won select {
+    font-size: 3vw;
+    margin-left: 2vw;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background-color: #F8F8F8;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+}
+
+.won {
+    font-size: 2vw;
+}
+

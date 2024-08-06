@@ -1,180 +1,180 @@
 .body {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 h1 {
-    margin-right: 55vw;
-    font-size: 6.5vw;
+  margin-right: 55vw;
+  font-size: 6.5vw;
 }
 
 .main_container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
 }
 
 .header {
-    border-bottom: 1px solid black;
-    display: flex;
-    flex-direction: row;
-    width: 80vw;
-    justify-content: space-around;
-    align-items: center;
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  width: 80vw;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .list, .heart {
-  width: 7vw;
-  height: 5vh;
-  padding: 15px;
-  cursor: pointer;
-  display: inline-block; /* 크기 변경에 따른 레이아웃 변경 방지 */
+width: 7vw;
+height: 5vh;
+padding: 15px;
+cursor: pointer;
+display: inline-block; /* 크기 변경에 따른 레이아웃 변경 방지 */
 }
 
 .active {
-  border-bottom: 2px solid blue; /* 활성화된 탭에 밑줄 추가 */
+border-bottom: 2px solid blue; /* 활성화된 탭에 밑줄 추가 */
 }
 
 .activeHeart {
-  border-bottom: 2px solid blue; /* 하트 아이콘이 활성화되었을 때 밑줄 추가 */
+border-bottom: 2px solid blue; /* 하트 아이콘이 활성화되었을 때 밑줄 추가 */
 }
 
 /* 추가: 모든 탭 이미지가 동일한 크기를 유지하도록 설정 */
 .header img {
-  width: 7vw;
-  height: 5vh;
-  object-fit: contain; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
+width: 7vw;
+height: 5vh;
+object-fit: contain; /* 이미지 비율 유지하며 컨테이너에 맞춤 */
 }
 
 .notInfo_container {
-    margin-top: 2vh;
-    margin-right: 10vw;
+  margin-top: 2vh;
+  margin-right: 10vw;
 }
 
 .NotYet {
-    font-size: 5vw;
+  font-size: 5vw;
 }
 
 .Sub {
-    margin-top: 7vh;
-    font-size: 4vw;
+  margin-top: 7vh;
+  font-size: 4vw;
 }
 
 .Sub p {
-    margin: 0;
+  margin: 0;
 }
 
 .Write_btn {
-    display: fixed;
-    font-size: 5vw;
-    border-radius: 50px;
-    border: none;
-    background-color: #6285E1;
-    color: white;
-    width: 50vw;
-    height: 6.5vh;
-    margin-top: 40vh;
+  display: fixed;
+  font-size: 5vw;
+  border-radius: 50px;
+  border: none;
+  background-color: #6285E1;
+  color: white;
+  width: 50vw;
+  height: 6.5vh;
+  margin-top: 35vh;
 }
 
 .diaries_grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  
-  .diary_item {
-    width: 100%;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  
-  .diary_image {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.diary_item {
+  width: 100%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.diary_image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
 
-  .modalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .modal {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 80%;
-    max-width: 600px;
-    position: relative;
-  }
-  
-  .closeButton {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .modalImage {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-  
-  .modalContent {
-    margin-top: 20px;
-  }
-  
-  .modalHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .modalHeader h2 {
-    margin: 0;
-  }
-  
-  .modalHeader p {
-    margin: 0;
-  }
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  .imageWrapper {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .likeIcon {
-    position: absolute;
-    top: 8px; /* 원하는 위치로 조정하세요 */
-    right: 8px; /* 원하는 위치로 조정하세요 */
-    width: 24px; /* 아이콘 크기 조정 */
-    height: 24px; /* 아이콘 크기 조정 */
-  }
-  
-  .like_container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  position: relative;
+}
 
-  .likeButton {
-    border: none;
-    background-color: white;
-    font-size: 3vw;
-  }
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.modalImage {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.modalContent {
+  margin-top: 20px;
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modalHeader h2 {
+  margin: 0;
+}
+
+.modalHeader p {
+  margin: 0;
+}
+
+.imageWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.likeIcon {
+  position: absolute;
+  top: 8px; /* 원하는 위치로 조정하세요 */
+  right: 8px; /* 원하는 위치로 조정하세요 */
+  width: 24px; /* 아이콘 크기 조정 */
+  height: 24px; /* 아이콘 크기 조정 */
+}
+
+.like_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.likeButton {
+  border: none;
+  background-color: white;
+  font-size: 3vw;
+}

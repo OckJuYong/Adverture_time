@@ -142,7 +142,7 @@
 }
 
 .createTripButton {
-    position: absolute;
+    position: fixed;
     width: 45vw;
     height: 7vh;
     background-color: #6285E1;
@@ -230,3 +230,85 @@
     width: 10vw;
     height: 7vh;
 }
+.traveltitle{
+    margin-top: 2vh;
+}
+.traveltitle{
+   
+    font-size: 5vw;
+    margin-left: 1vh;
+}
+.guideContent{
+    margin-top: 10vh;
+    height:100vh;
+}
+.guideBox{
+    width: 74vw;
+    height: 20vh;
+    background-color: 
+    #F5F5F5;
+    box-shadow: #D9D9D9;
+    border-radius: 4vw;
+    margin-left: 14.5vw;
+    margin-bottom: 5vh;
+}
+p{
+    margin-left: 1vh;
+    font-size: 3vw;
+}
+.p1{
+    margin-top: -4.6vh;
+    margin-left: 34vh
+}
+.searchContainer {
+    display: flex;
+    align-items: center;
+    background-color: #f3f3f3;
+    border-radius: 20px;
+    padding: 8px 16px;
+    width: 50vw;
+    margin-bottom: -30vw;
+    margin-left: 16vh;
+  }
+  
+  .searchIcon {
+    width: 20px;
+    height: 3vh;
+    margin-right: 8px;
+  }
+  
+  .searchInput {
+    flex: 1;
+    border: none;
+    background-color: transparent;
+    font-size: 16px;
+    outline: none;
+    padding: 4px 0;
+  }
+  
+  .searchInput::placeholder {
+    color: #aaa;
+  }
+  
+  .searchInput:focus {
+    border-bottom: 2px solid #007bff;
+  }
+  .modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modalContent {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+  }
